@@ -5,9 +5,13 @@ WORKDIR /app/backend
 
 # Copy package-lock.json & package.json from host to inside container working directory
 COPY package*.json ./
+COPY tsconfig.build.json ./
+COPY tsconfig.json ./
 
 RUN npm install
-COPY . .
 
-CMD ["npm", "run", "start:dev"]
+RUN npm run build
+
+CMD [ "node", "dist/main"]
+
 
