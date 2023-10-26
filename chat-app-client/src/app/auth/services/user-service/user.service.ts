@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import {UserI} from "../../model/user.interface";
+import {UserI} from "../../../model/user.interface";
 
 @Injectable({
   providedIn: 'root'

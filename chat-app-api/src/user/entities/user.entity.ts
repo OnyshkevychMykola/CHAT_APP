@@ -1,4 +1,5 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {BeforeInsert, BeforeUpdate, Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
+import {RoomEntity} from "../../chat/entities/room.entity";
 
 @Entity()
 export class UserEntity {
@@ -14,6 +15,9 @@ export class UserEntity {
 
     @Column({select: false})
     password: string;
+
+    @ManyToMany(() => RoomEntity, room => room.users)
+    rooms: RoomEntity[]
 
     @BeforeInsert()
     @BeforeUpdate()

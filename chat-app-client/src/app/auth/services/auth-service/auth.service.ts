@@ -4,8 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import {UserI} from "../../model/user.interface";
-import {LoginI} from "../../model/login.interface";
+import {UserI} from "../../../model/user.interface";
+import {LoginI} from "../../../model/login.interface";
 
 @Injectable({
   providedIn: 'root'

@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {tap} from "rxjs";
 import {CustomValidators} from "../../helpers/custom-validators";
-import {UserService} from "../../../services/user-service/user.service";
+import {UserService} from "../../services/user-service/user.service";
 
 @Component({
   selector: 'app-register',

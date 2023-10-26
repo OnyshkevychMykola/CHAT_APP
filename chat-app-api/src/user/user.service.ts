@@ -3,7 +3,6 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {UserEntity} from "./entities/user.entity";
 import {Repository} from "typeorm";
 import {UserI} from "./entities/user.interface";
-const bcrypt = require('bcrypt');
 import {IPaginationOptions, paginate, Pagination} from "nestjs-typeorm-paginate";
 import {AuthService} from "../auth/auth.service";
 
@@ -71,16 +70,12 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
+  public getOne(id: number): Promise<UserI> {
+    return this.userRepository.findOneOrFail( { where: { id } });
+  }
+
   private async mailExists(email: string): Promise<boolean> {
     const user = await this.userRepository.findOneBy({ email });
     return !!user;
   }
-
-  async comparePasswords(password: string, storedPasswordHash: string): Promise<any> {
-    return bcrypt.compare(password, storedPasswordHash);
-  }
-
-  // verifyJwt(jwt: string): Promise<any> {
-  //   return this.jwtService.verifyAsync(jwt);
-  // }
 }

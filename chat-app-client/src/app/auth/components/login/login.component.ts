@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
-import {AuthService} from "../../../services/auth-service/auth.service";
+import {AuthService} from "../../services/auth-service/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -24,7 +24,7 @@ export class LoginComponent {
         email: this.email.value,
         password: this.password.value
       }).pipe(
-        tap(() => this.router.navigate(['../../private/dashboard']))
+        tap(() => this.router.navigate(['../../main/dashboard']))
       ).subscribe()
     }
   }
