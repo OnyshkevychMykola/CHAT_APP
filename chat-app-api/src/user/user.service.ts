@@ -1,7 +1,7 @@
 import {ConflictException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {UserEntity} from "./entities/user.entity";
-import {Repository} from "typeorm";
+import {Like, Repository} from "typeorm";
 import {UserI} from "./entities/user.interface";
 import {IPaginationOptions, paginate, Pagination} from "nestjs-typeorm-paginate";
 import {AuthService} from "../auth/auth.service";
@@ -52,6 +52,14 @@ export class UserService {
 
   async findAll(options: IPaginationOptions): Promise<Pagination<UserI>> {
     return paginate<UserEntity>(this.userRepository, options);
+  }
+
+  async findAllByUsername(username: string): Promise<UserI[]> {
+    return this.userRepository.find({
+      where: {
+        username: Like(`%${username.toLowerCase()}%`)
+      }
+    })
   }
 
   private async findByEmail(email: string): Promise<UserI> {

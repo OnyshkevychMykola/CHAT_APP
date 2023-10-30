@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { Repository } from 'typeorm';
-import {RoomI} from "./entities/room.interface";
-import {RoomEntity} from "./entities/room.entity";
-import {UserI} from "../user/entities/user.interface";
+import {RoomI} from "../entities/room.interface";
+import {RoomEntity} from "../entities/room.entity";
+import {UserI} from "../../user/entities/user.interface";
+import {use} from "passport";
 
 @Injectable()
 export class ChatService {
@@ -25,12 +26,16 @@ export class ChatService {
             .createQueryBuilder('room')
             .leftJoin('room.users', 'user')
             .where('user.id = :userId', {userId})
-
+            .leftJoinAndSelect('room.users', 'all_users')
+            .orderBy('room.updated_at', 'DESC');
         return paginate(query, options);
     }
 
     async addCreatorToRoom(room: RoomI, creator: UserI): Promise<RoomI> {
-        room.users.push(creator);
+        const foundUser = room.users.find((user) => user.email === creator.email);
+        if (foundUser === undefined) {
+            room.users.push(creator);
+        }
         return room;
     }
 

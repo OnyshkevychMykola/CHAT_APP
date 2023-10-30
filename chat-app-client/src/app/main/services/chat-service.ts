@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import {ChatSocket} from "../socket/chat-socket";
 import {UserI} from "../../model/user.interface";
 import {RoomI, RoomPaginateI} from "../../model/chat-room.interface";
+import {Observable} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  constructor(private socket: ChatSocket) { }
+  constructor(private socket: ChatSocket, private snackbar: MatSnackBar) {
+  }
 
   sendMessage() {
   }
@@ -17,20 +20,18 @@ export class ChatService {
     return this.socket.fromEvent('message');
   }
 
-  getMyRooms() {
+  getMyRooms(): Observable<RoomPaginateI> {
     return this.socket.fromEvent<RoomPaginateI>('rooms');
   }
 
-  createRoom() {
-    const user2: UserI = {
-      id: 3
-    };
+  emitPaginateRooms(limit: number, page: number) {
+    this.socket.emit('paginateRooms', {limit, page});
+  }
 
-    const room: RoomI = {
-      name: 'Testroom',
-      users: [user2]
-    }
-
+  createRoom(room: RoomI) {
     this.socket.emit('createRoom', room);
+    this.snackbar.open(`Room ${room.name} created successfully`, 'Close', {
+      duration: 2000, horizontalPosition: 'right', verticalPosition: 'top'
+    });
   }
 }
