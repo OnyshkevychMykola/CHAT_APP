@@ -4,11 +4,15 @@ import {OnModuleInit, UnauthorizedException} from '@nestjs/common';
 import {AuthService} from "../auth/auth.service";
 import {UserService} from "../user/user.service";
 import {UserI} from "../user/entities/user.interface";
-import {ChatService} from "./services/chat.service";
-import {RoomI} from "./entities/room.interface";
-import {PageI} from "./entities/page.interface";
-import {ConnectedUserService} from "./services/connected-user.service";
-import {ConnectedUserI} from "./entities/connected-user.interface";
+import {ChatService} from "./services/chat/chat.service";
+import {RoomI} from "./entities/room/room.interface";
+import {PageI} from "./entities/page/page.interface";
+import {ConnectedUserService} from "./services/connected-user/connected-user.service";
+import {ConnectedUserI} from "./entities/connected-user/connected-user.interface";
+import {JoinedRoomService} from "./services/joined-room/joined-room.service";
+import {MessageService} from "./services/message/message.service";
+import {MessageI} from "./entities/message/message.interface";
+import {JoinedRoomI} from "./entities/joined-room/joined-room.interface";
 
 @WebSocketGateway({ cors: { origin: ['http://localhost:3000', 'http://localhost:4200'] } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit  {
@@ -22,10 +26,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       private authService: AuthService,
       private userService: UserService,
       private chatService: ChatService,
-      private connectedUserService: ConnectedUserService) { }
+      private connectedUserService: ConnectedUserService,
+      private joinedRoomService: JoinedRoomService,
+      private messageService: MessageService) { }
 
   async onModuleInit() {
     await this.connectedUserService.deleteAll();
+    await this.joinedRoomService.deleteAll();
   }
 
 
@@ -64,6 +71,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     for (const user of createdRoom.users) {
       const connections: ConnectedUserI[] = await this.connectedUserService.findByUser(user);
       const rooms = await this.chatService.getRoomsForUser(user.id, {page: 1, limit: 10});
+      rooms.meta.currentPage = rooms.meta.currentPage - 1;
       for (const connection of connections) {
         await this.server.to(connection.socketId).emit('rooms', rooms);
       }
@@ -75,9 +83,38 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   async onPaginateRoom(socket: Socket, page: PageI) {
     page.limit = page.limit > 100 ? 100 : page.limit;
     page.page = page.page + 1;
-    const rooms = await this.chatService.getRoomsForUser(socket.data.user.id, page);
+    const rooms = await this.chatService.getRoomsForUser(socket.data.user.id, this.handleIncomingPageRequest(page));
     rooms.meta.currentPage = rooms.meta.currentPage - 1;
     return this.server.to(socket.id).emit('rooms', rooms);
+  }
+
+  @SubscribeMessage('joinRoom')
+  async onJoinRoom(socket: Socket, room: RoomI) {
+    const messages = await this.messageService.findMessagesForRoom(room, { limit: 10, page: 1 });
+    messages.meta.currentPage = messages.meta.currentPage - 1;
+    await this.joinedRoomService.create({ socketId: socket.id, user: socket.data.user, room });
+    this.server.to(socket.id).emit('messages', messages);
+  }
+
+  @SubscribeMessage('leaveRoom')
+  async onLeaveRoom(socket: Socket) {
+    await this.joinedRoomService.deleteBySocketId(socket.id);
+  }
+
+  @SubscribeMessage('addMessage')
+  async onAddMessage(socket: Socket, message: MessageI) {
+    const createdMessage: MessageI = await this.messageService.create({...message, user: socket.data.user});
+    const room: RoomI = await this.chatService.getRoom(createdMessage.room.id);
+    const joinedUsers: JoinedRoomI[] = await this.joinedRoomService.findByRoom(room);
+    for(const user of joinedUsers) {
+      await this.server.to(user.socketId).emit('messageAdded', createdMessage);
+    }
+  }
+
+  private handleIncomingPageRequest(page: PageI) {
+    page.limit = page.limit > 100 ? 100 : page.limit;
+    page.page = page.page + 1;
+    return page;
   }
 
 

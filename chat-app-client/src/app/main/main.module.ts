@@ -16,13 +16,17 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import { SelectUsersComponent } from './components/select-users/select-users.component';
 import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
+import { ChatMessageComponent } from './components/chat-message/chat-message.component';
+import { ChatRoomComponent } from './components/chat-room/chat-room.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     CreateRoomComponent,
-    SelectUsersComponent
+    SelectUsersComponent,
+    ChatMessageComponent,
+    ChatRoomComponent
   ],
   imports: [
     CommonModule,

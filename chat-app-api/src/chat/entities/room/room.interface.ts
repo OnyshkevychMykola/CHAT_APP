@@ -1,4 +1,4 @@
-import {UserI} from "../../user/entities/user.interface";
+import {UserI} from "../../../user/entities/user.interface";
 
 export interface RoomI {
     id?: number;

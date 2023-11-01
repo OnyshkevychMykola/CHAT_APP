@@ -4,6 +4,7 @@ import {UserI} from "../../model/user.interface";
 import {RoomI, RoomPaginateI} from "../../model/chat-room.interface";
 import {Observable} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MessageI, MessagePaginateI} from "../../model/message.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,24 @@ export class ChatService {
   constructor(private socket: ChatSocket, private snackbar: MatSnackBar) {
   }
 
-  sendMessage() {
+  getAddedMessage(): Observable<MessageI> {
+    return this.socket.fromEvent<MessageI>('messageAdded');
   }
 
-  getMessage() {
-    return this.socket.fromEvent('message');
+  sendMessage(message: MessageI) {
+    this.socket.emit('addMessage', message);
+  }
+
+  joinRoom(room: RoomI) {
+    this.socket.emit('joinRoom', room);
+  }
+
+  leaveRoom(room: RoomI) {
+    this.socket.emit('leaveRoom', room);
+  }
+
+  getMessages(): Observable<MessagePaginateI> {
+    return this.socket.fromEvent<MessagePaginateI>('messages');
   }
 
   getMyRooms(): Observable<RoomPaginateI> {

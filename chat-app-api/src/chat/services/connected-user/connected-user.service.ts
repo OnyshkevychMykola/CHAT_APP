@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {ConnectedUserEntity} from "../entities/connected-user.entity";
-import {ConnectedUserI} from "../entities/connected-user.interface";
-import {UserI} from "../../user/entities/user.interface";
+import {ConnectedUserEntity} from "../../entities/connected-user/connected-user.entity";
+import {ConnectedUserI} from "../../entities/connected-user/connected-user.interface";
+import {UserI} from "../../../user/entities/user.interface";
 
 @Injectable()
 export class ConnectedUserService {
