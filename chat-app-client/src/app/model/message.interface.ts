@@ -1,6 +1,6 @@
 import { Meta } from "@angular/platform-browser";
+import { RoomI } from "./room.interface";
 import { UserI } from "./user.interface";
-import {RoomI} from "./chat-room.interface";
 
 export interface MessageI {
   id?: number;

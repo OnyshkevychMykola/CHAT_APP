@@ -1,13 +1,14 @@
 .container {
   display: flex;
   justify-content: center;
+
   mat-card {
     position: fixed;
     margin: 20px;
 
     .rooms {
       height: 500px;
-      width: 250px;
+      width: 250;
       overflow-y: scroll;
       scrollbar-color: lightgrey darkgrey;
       scrollbar-width: thin;

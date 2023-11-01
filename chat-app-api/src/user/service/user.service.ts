@@ -1,33 +1,33 @@
-import {ConflictException, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
-import {InjectRepository} from "@nestjs/typeorm";
-import {UserEntity} from "./entities/user.entity";
-import {Like, Repository} from "typeorm";
-import {UserI} from "./entities/user.interface";
-import {IPaginationOptions, paginate, Pagination} from "nestjs-typeorm-paginate";
-import {AuthService} from "../auth/auth.service";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { UserI } from 'src/user/entities/user.interface';
+import { Like, Repository } from 'typeorm';
+import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
+import { AuthService } from 'src/auth/service/auth.service';
 
 @Injectable()
 export class UserService {
 
   constructor(
-      @InjectRepository(UserEntity)
-      private readonly userRepository: Repository<UserEntity>,
-      private readonly authService: AuthService,
-  ) {
-  }
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+    private authService: AuthService
+  ) { }
 
   async create(newUser: UserI): Promise<UserI> {
     try {
       const exists: boolean = await this.mailExists(newUser.email);
       if (!exists) {
-        newUser.password = await this.hashPassword(newUser.password);
+        const passwordHash: string = await this.hashPassword(newUser.password);
+        newUser.password = passwordHash;
         const user = await this.userRepository.save(this.userRepository.create(newUser));
         return this.findOne(user.id);
       } else {
-        throw new ConflictException('Email is already in use');
+        throw new HttpException('Email is already in use', HttpStatus.CONFLICT);
       }
     } catch {
-      throw new ConflictException('Email is already in use');
+      throw new HttpException('Email is already in use', HttpStatus.CONFLICT);
     }
   }
 
@@ -40,13 +40,13 @@ export class UserService {
           const payload: UserI = await this.findOne(foundUser.id);
           return this.authService.generateJwt(payload);
         } else {
-          throw new UnauthorizedException('Login was not successfull, wrong credentials');
+          throw new HttpException('Login was not successfull, wrong credentials', HttpStatus.UNAUTHORIZED);
         }
       } else {
-        throw new UnauthorizedException('Login was not successfull, wrong credentials');
+        throw new HttpException('Login was not successfull, wrong credentials', HttpStatus.UNAUTHORIZED);
       }
     } catch {
-      throw new NotFoundException('User not found');
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -62,8 +62,9 @@ export class UserService {
     })
   }
 
+  // also returns the password
   private async findByEmail(email: string): Promise<UserI> {
-    return this.userRepository.findOne({ where: { email }, select: ['id', 'email', 'username', 'password'] });
+    return this.userRepository.findOne({ email }, { select: ['id', 'email', 'username', 'password'] });
   }
 
   private async hashPassword(password: string): Promise<string> {
@@ -75,15 +76,20 @@ export class UserService {
   }
 
   private async findOne(id: number): Promise<UserI> {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOne({ id });
   }
 
   public getOne(id: number): Promise<UserI> {
-    return this.userRepository.findOneOrFail( { where: { id } });
+    return this.userRepository.findOneOrFail({ id });
   }
 
   private async mailExists(email: string): Promise<boolean> {
-    const user = await this.userRepository.findOneBy({ email });
-    return !!user;
+    const user = await this.userRepository.findOne({ email });
+    if (user) {
+      return true;
+    } else {
+      return false;
+    }
   }
+
 }

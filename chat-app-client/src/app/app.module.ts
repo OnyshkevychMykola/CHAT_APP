@@ -1,17 +1,17 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatSnackBarModule} from "@angular/material/snack-bar";
-import {HttpClientModule} from "@angular/common/http";
-import {JwtHelperService, JwtModule} from "@auth0/angular-jwt";
-import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { JwtModule } from '@auth0/angular-jwt';
+
 export function tokenGetter() {
   return localStorage.getItem("nestjs_chat_app");
 }
-
 
 @NgModule({
   declarations: [
@@ -20,9 +20,9 @@ export function tokenGetter() {
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MatSnackBarModule,
-    HttpClientModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -30,7 +30,7 @@ export function tokenGetter() {
       }
     })
   ],
-  providers: [JwtHelperService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

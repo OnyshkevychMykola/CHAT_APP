@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { UserI } from 'src/app/model/user.interface';
-import {UserService} from "../../../auth/services/user-service/user.service";
+import { UserService } from 'src/app/auth/services/user-service/user.service';
 
 
 @Component({

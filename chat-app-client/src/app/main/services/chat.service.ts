@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
-import {ChatSocket} from "../socket/chat-socket";
-import {UserI} from "../../model/user.interface";
-import {RoomI, RoomPaginateI} from "../../model/chat-room.interface";
-import {Observable} from "rxjs";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {MessageI, MessagePaginateI} from "../../model/message.interface";
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
+import { MessageI, MessagePaginateI } from 'src/app/model/message.interface';
+import { RoomI, RoomPaginateI } from 'src/app/model/room.interface';
+import { ChatSocket } from '../sockets/chat-socket';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  constructor(private socket: ChatSocket, private snackbar: MatSnackBar) {
-  }
+  constructor(private socket: ChatSocket, private snackbar: MatSnackBar) { }
 
   getAddedMessage(): Observable<MessageI> {
     return this.socket.fromEvent<MessageI>('messageAdded');
@@ -39,7 +37,7 @@ export class ChatService {
   }
 
   emitPaginateRooms(limit: number, page: number) {
-    this.socket.emit('paginateRooms', {limit, page});
+    this.socket.emit('paginateRooms', { limit, page });
   }
 
   createRoom(room: RoomI) {
@@ -48,4 +46,5 @@ export class ChatService {
       duration: 2000, horizontalPosition: 'right', verticalPosition: 'top'
     });
   }
+
 }

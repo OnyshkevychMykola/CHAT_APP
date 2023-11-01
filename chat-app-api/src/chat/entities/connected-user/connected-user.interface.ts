@@ -1,7 +1,8 @@
-import {UserI} from "../../../user/entities/user.interface";
+import { UserI } from "src/user/entities/user.interface";
+
 
 export interface ConnectedUserI {
-    id?: number;
-    socketId: string;
-    user: UserI;
+  id?: number;
+  socketId: string;
+  user: UserI;
 }

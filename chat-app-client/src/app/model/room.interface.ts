@@ -1,5 +1,5 @@
+import { Meta } from "./meta.interface";
 import { UserI } from "./user.interface";
-import {Meta} from "./meta.interface";
 
 
 export interface RoomI {

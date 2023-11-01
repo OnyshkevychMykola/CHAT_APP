@@ -1,11 +1,12 @@
-import {UserI} from "../../../user/entities/user.interface";
-import {RoomI} from "../room/room.interface";
+import { UserI } from "src/user/entities/user.interface";
+import { RoomI } from "../room/room.interface";
+
 
 export interface MessageI {
-    id?: number;
-    text: string;
-    user: UserI;
-    room: RoomI;
-    created_at: Date;
-    updated_at: Date;
+  id?: number;
+  text: string;
+  user: UserI;
+  room: RoomI;
+  created_at: Date;
+  updated_at: Date;
 }

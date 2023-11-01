@@ -1,5 +1,6 @@
 <div *ngIf="chatRoom; else no_chatroom_selected">
 
+  <!-- Header -->
   <div style="height: 125px;">
     <span style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
       <h2>{{chatRoom.name}}</h2>
@@ -14,7 +15,8 @@
     </span>
   </div>
 
-  <div #messagesNew class="message">
+  <!-- Messages -->
+  <div #messages class="message">
     <span *ngFor="let message of (messagesPaginate$ | async)?.items">
       <app-chat-message [message]="message"></app-chat-message>
     </span>

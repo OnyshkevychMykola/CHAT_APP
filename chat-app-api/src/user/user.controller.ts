@@ -1,18 +1,18 @@
-import {Controller, Get, Post, Body, Query, UseGuards} from '@nestjs/common';
-import { UserService } from './user.service';
+import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { CreateUserDto } from './dto/create-user.dto';
-import {UserI} from "./entities/user.interface";
-import {UserHelperService} from "./user-helper.service";
-import {Pagination} from "nestjs-typeorm-paginate";
-import {LoginUserDto} from "./dto/login-user.dto";
-import {LoginResponseI} from "./entities/login.interface";
-import {JwtAuthGuard} from "../auth/jwt.guard";
+import { LoginUserDto } from './dto/login-user.dto';
+import { LoginResponseI } from './entities/login-response.interface';
+import { UserI } from './entities/user.interface';
+import { UserHelperService } from './service/user-helper.service';
+import { UserService } from './service/user.service';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
+
   constructor(
-      private userService: UserService,
-      private userHelperService: UserHelperService
+    private userService: UserService,
+    private userHelperService: UserHelperService
   ) { }
 
   @Post()
@@ -21,17 +21,18 @@ export class UserController {
     return this.userService.create(userEntity);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Query('page') page: number = 1, @Query('limit') limit: number = 10): Promise<Pagination<UserI>> {
     limit = limit > 100 ? 100 : limit;
-    return this.userService.findAll({ page, limit });
+    return this.userService.findAll({ page, limit, route: 'http://localhost:3000/api/users' });
   }
 
   @Get('/find-by-username')
   async findAllByUsername(@Query('username') username: string) {
     return this.userService.findAllByUsername(username);
   }
+
+
 
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto): Promise<LoginResponseI> {

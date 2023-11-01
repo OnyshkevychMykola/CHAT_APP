@@ -1,43 +1,34 @@
-import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    JoinTable,
-    ManyToMany,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm";
-import {UserEntity} from "../../../user/entities/user.entity";
-import {JoinedRoomEntity} from "../joined-room/joined-room.entity";
-import {MessageEntity} from "../message/message.entity";
+import { UserEntity } from "src/user/entities/user.entity";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { JoinedRoomEntity } from "../joined-room/joined-room.entity";
+import { MessageEntity } from "../message/message.entity";
 
 @Entity()
 export class RoomEntity {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column({nullable: true})
-    description: string;
+  @Column({nullable: true})
+  description: string;
 
-    @ManyToMany(() => UserEntity)
-    @JoinTable()
-    users: UserEntity[];
+  @ManyToMany(() => UserEntity)
+  @JoinTable()
+  users: UserEntity[];
 
-    @CreateDateColumn()
-    created_at: Date;
+  @OneToMany(() => JoinedRoomEntity, joinedRoom => joinedRoom.room)
+  joinedUsers: JoinedRoomEntity[];
 
-    @UpdateDateColumn()
-    updated_at: Date;
+  @OneToMany(() => MessageEntity, message => message.room)
+  messages: MessageEntity[];
 
-    @OneToMany(() => JoinedRoomEntity, joinedRoom => joinedRoom.room)
-    joinedUsers: JoinedRoomEntity[];
+  @CreateDateColumn()
+  created_at: Date;
 
-    @OneToMany(() => MessageEntity, message => message.room)
-    messages: MessageEntity[];
+  @UpdateDateColumn()
+  updated_at: Date;
 
 }

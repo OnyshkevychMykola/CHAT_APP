@@ -35,7 +35,7 @@
 
             <mat-hint *ngIf="!form.valid"><small>Please fill out all needed information</small></mat-hint>
             <mat-error *ngIf="passwordConfirm.touched && form.hasError('passwordsNotMatching')"><small>Passwords are not
-              matching</small></mat-error>
+                matching</small></mat-error>
 
             <div class="button">
               <button mat-button type="submit" [disabled]="!form.valid">Register</button>

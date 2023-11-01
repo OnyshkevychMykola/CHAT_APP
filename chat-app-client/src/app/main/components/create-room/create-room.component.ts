@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserI } from 'src/app/model/user.interface';
-import {ChatService} from "../../services/chat-service";
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-create-room',
@@ -17,8 +17,7 @@ export class CreateRoomComponent {
     users: new FormArray([], [Validators.required])
   });
 
-  constructor(private chatService: ChatService,
-              private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private chatService: ChatService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   create() {
     if (this.form.valid) {

@@ -1,11 +1,11 @@
-import {Injectable, NestMiddleware, UnauthorizedException} from '@nestjs/common';
+import { UnauthorizedException, HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import {UserI} from "../user/entities/user.interface";
-import {AuthService} from "../auth/auth.service";
-import {UserService} from "../user/user.service";
+import { AuthService } from 'src/auth/service/auth.service';
+import { UserI } from 'src/user/entities/user.interface';
+import { UserService } from 'src/user/service/user.service';
 
 export interface RequestModel extends Request {
-    user: UserI
+  user: UserI
 }
 
 

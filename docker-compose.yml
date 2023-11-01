@@ -5,6 +5,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: ./chat-app-api
+      target: development
     volumes:
       - ./chat-app-api:/app/backend
       - /app/backend/node_modules

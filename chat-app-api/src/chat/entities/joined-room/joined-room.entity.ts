@@ -1,22 +1,22 @@
+import { UserEntity } from "src/user/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { RoomEntity } from "../room/room.entity";
-import {UserEntity} from "../../../user/entities/user.entity";
 
 @Entity()
 export class JoinedRoomEntity {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    socketId: string;
+  @Column()
+  socketId: string;
 
-    @ManyToOne(() => UserEntity, user => user.joinedRooms)
-    @JoinColumn()
-    user: UserEntity;
+  @ManyToOne(() => UserEntity, user => user.joinedRooms)
+  @JoinColumn()
+  user: UserEntity;
 
-    @ManyToOne(() => RoomEntity, room => room.joinedUsers)
-    @JoinColumn()
-    room: RoomEntity;
+  @ManyToOne(() => RoomEntity, room => room.joinedUsers)
+  @JoinColumn()
+  room: RoomEntity;
 
 }
