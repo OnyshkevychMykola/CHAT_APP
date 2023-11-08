@@ -7,11 +7,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ConnectedUserService {
-
   constructor(
     @InjectRepository(ConnectedUserEntity)
-    private readonly connectedUserRepository: Repository<ConnectedUserEntity>
-  ) { }
+    private readonly connectedUserRepository: Repository<ConnectedUserEntity>,
+  ) {}
 
   async create(connectedUser: ConnectedUserI): Promise<ConnectedUserI> {
     return this.connectedUserRepository.save(connectedUser);
@@ -26,10 +25,6 @@ export class ConnectedUserService {
   }
 
   async deleteAll() {
-    await this.connectedUserRepository
-      .createQueryBuilder()
-      .delete()
-      .execute();
+    await this.connectedUserRepository.createQueryBuilder().delete().execute();
   }
-
 }

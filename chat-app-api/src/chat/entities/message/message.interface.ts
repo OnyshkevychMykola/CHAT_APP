@@ -1,6 +1,5 @@
-import { UserI } from "src/user/entities/user.interface";
-import { RoomI } from "../room/room.interface";
-
+import { UserI } from 'src/user/entities/user.interface';
+import { RoomI } from '../room/room.interface';
 
 export interface MessageI {
   id?: number;

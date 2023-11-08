@@ -8,11 +8,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class JoinedRoomService {
-
   constructor(
     @InjectRepository(JoinedRoomEntity)
-    private readonly joinedRoomRepository: Repository<JoinedRoomEntity>
-  ) { }
+    private readonly joinedRoomRepository: Repository<JoinedRoomEntity>,
+  ) {}
 
   async create(joinedRoom: JoinedRoomI): Promise<JoinedRoomI> {
     return this.joinedRoomRepository.save(joinedRoom);
@@ -31,10 +30,6 @@ export class JoinedRoomService {
   }
 
   async deleteAll() {
-    await this.joinedRoomRepository
-      .createQueryBuilder()
-      .delete()
-      .execute();
+    await this.joinedRoomRepository.createQueryBuilder().delete().execute();
   }
-
 }

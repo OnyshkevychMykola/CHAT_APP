@@ -3,19 +3,21 @@
   justify-content: center;
 
   mat-card {
-    position: fixed;
+    height: 94vh;
     margin: 20px;
+    width: 100%;
 
     .rooms {
-      height: 500px;
-      width: 250;
+      height: 70vh;
+      width: 350px;
       overflow-y: scroll;
-      scrollbar-color: lightgrey darkgrey;
-      scrollbar-width: thin;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .chatroom {
-      margin-left: 40px;
-      width: 600px;
+      margin: 0 40px;
+      width: 100%;
     }
   }
 }

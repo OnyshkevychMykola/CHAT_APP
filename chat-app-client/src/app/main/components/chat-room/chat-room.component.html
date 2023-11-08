@@ -1,6 +1,5 @@
 <div *ngIf="chatRoom; else no_chatroom_selected">
 
-  <!-- Header -->
   <div style="height: 125px;">
     <span style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
       <h2>{{chatRoom.name}}</h2>
@@ -15,17 +14,15 @@
     </span>
   </div>
 
-  <!-- Messages -->
   <div #messages class="message">
     <span *ngFor="let message of (messagesPaginate$ | async)?.items">
       <app-chat-message [message]="message"></app-chat-message>
     </span>
   </div>
 
-  <!-- Add Message -->
-  <div style="position: absolute; bottom: 0; display: flex; flex-direction: row; align-items: center;">
-    <mat-form-field style="width: 350px;">
-      <input matInput [formControl]="chatMessage" type="text">
+  <div class="messagesInputContainer">
+    <mat-form-field>
+      <input matInput [formControl]="chatMessage" type="text" class="messagesInput">
     </mat-form-field>
     <button mat-button [disabled]="!chatMessage.valid" (click)="sendMessage()">
       <span style="display: flex; flex-direction: row; align-items: center;">

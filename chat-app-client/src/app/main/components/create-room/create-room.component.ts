@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserI } from 'src/app/model/user.interface';
@@ -22,7 +22,7 @@ export class CreateRoomComponent {
   create() {
     if (this.form.valid) {
       this.chatService.createRoom(this.form.getRawValue());
-      this.router.navigate(['../dashboard'], { relativeTo: this.activatedRoute });
+      void this.router.navigate(['../dashboard'], { relativeTo: this.activatedRoute });
     }
   }
 

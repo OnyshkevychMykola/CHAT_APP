@@ -1,5 +1,4 @@
-import { UserI } from "src/user/entities/user.interface";
-
+import { UserI } from 'src/user/entities/user.interface';
 
 export interface ConnectedUserI {
   id?: number;

@@ -1,15 +1,23 @@
 h3 {
-  padding: 0px;
-  padding-top: -10px;
-  margin: 0px;
+  padding: -10px 0 0;
+  margin: 0;
 }
 
 .message {
-  background-color: rgb(236, 236, 236); 
-  height: 400px; 
+  background-color: rgb(236, 236, 236);
+  height: 65vh;
   overflow-y: scroll;
-  scrollbar-color: lightgrey darkgrey;
-  scrollbar-width: thin;
+}
+
+.messagesInputContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.messagesInput {
+  width: 100%;
 }
 
 ::-webkit-scrollbar-track {

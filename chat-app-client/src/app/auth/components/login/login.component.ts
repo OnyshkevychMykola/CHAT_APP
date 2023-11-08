@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth-service/auth.service';
 
 @Component({
@@ -11,30 +10,33 @@ import { AuthService } from '../../services/auth-service/auth.service';
 })
 export class LoginComponent {
 
-  form: FormGroup = new FormGroup({
+  loginForm: FormGroup = new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
     password: new FormControl(null, [Validators.required])
   });
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  login() {
-    if (this.form.valid) {
-      this.authService.login({
-        email: this.email.value,
-        password: this.password.value
-      }).pipe(
-        tap(() => this.router.navigate(['../../main/dashboard']))
-      ).subscribe()
+  async login() {
+    if (this.loginForm.valid) {
+      try {
+        await this.authService.login({
+          email: this.email.value,
+          password: this.password.value
+        });
+        await this.router.navigate(['../../main/dashboard']);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
   get email(): FormControl {
-    return this.form.get('email') as FormControl;
+    return this.loginForm.get('email') as FormControl;
   }
 
   get password(): FormControl {
-    return this.form.get('password') as FormControl;
+    return this.loginForm.get('password') as FormControl;
   }
 
 }

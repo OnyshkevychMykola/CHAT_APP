@@ -14,7 +14,7 @@ export class SelectUsersComponent implements OnInit {
 
   @Input() users: UserI[] = [];
   @Output() addUser: EventEmitter<UserI> = new EventEmitter<UserI>();
-  @Output() removeuser: EventEmitter<UserI>= new EventEmitter<UserI>();
+  @Output() removeUser: EventEmitter<UserI>= new EventEmitter<UserI>();
 
   searchUsername = new FormControl();
   filteredUsers: UserI[] = [];
@@ -40,19 +40,15 @@ export class SelectUsersComponent implements OnInit {
   }
 
   removeUserFromForm(user: UserI) {
-    this.removeuser.emit(user);
+    this.removeUser.emit(user);
   }
 
   setSelectedUser(user: UserI) {
     this.selectedUser = user;
   }
 
-  displayFn(user: UserI) {
-    if(user) {
-      return user.username;
-    } else {
-      return '';
-    }
+  displayFn(user) {
+    return user ? user.username : '';
   }
 
 }
