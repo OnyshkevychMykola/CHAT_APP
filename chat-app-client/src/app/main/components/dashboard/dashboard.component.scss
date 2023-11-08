@@ -2,6 +2,12 @@
   display: flex;
   justify-content: center;
 
+  .headerContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   mat-card {
     height: 94vh;
     margin: 20px;

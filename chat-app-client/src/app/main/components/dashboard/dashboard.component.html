@@ -1,21 +1,24 @@
 <div class="container">
   <mat-card>
     <div style="display: flex; flex-direction: row;">
-
       <div>
-        <div>
-          <span style="display: flex; flex-direction: row; align-items: baseline;">
-            <h2>Obrgram</h2>
-            <small style="margin-left:10px;">Logged in as {{user.username}}</small>
+        <div style="padding: 20px">
+          <span class="headerContainer">
+            <span style="display: flex; align-items: center; justify-content: space-between;">
+              <h2>Obrgram</h2>
+              <span style="display: flex; flex-direction: column; align-items: center">
+                 <i class="material-icons">person</i>
+                <small>{{user.username}} </small>
+              </span>
+            </span>
+             <button mat-button [routerLink]="['../create-room']">Add Chat</button>
           </span>
-          <button mat-button [routerLink]="['../create-room']">Create new Room</button>
         </div>
 
         <div *ngIf="(rooms$|async)?.items?.length > 0; else no_rooms" class="rooms">
           <mat-selection-list [multiple]="false" (selectionChange)="onSelectRoom($event)">
             <mat-list-option *ngFor="let room of (rooms$|async)?.items" [value]="room">
-              Name: {{room.name}} Id: {{room.id}}
-              <mat-divider></mat-divider>
+              Name: {{room.name}}
             </mat-list-option>
           </mat-selection-list>
           <mat-paginator [length]="(rooms$ | async)?.meta?.totalItems" [pageIndex]="(rooms$ | async)?.meta?.currentPage"

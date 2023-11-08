@@ -16,8 +16,11 @@ h3 {
   margin-top: 40px;
 }
 
-.messagesInput {
-  width: 100%;
+.noChatRooms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 ::-webkit-scrollbar-track {

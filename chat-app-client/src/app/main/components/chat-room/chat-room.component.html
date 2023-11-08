@@ -21,8 +21,8 @@
   </div>
 
   <div class="messagesInputContainer">
-    <mat-form-field>
-      <input matInput [formControl]="chatMessage" type="text" class="messagesInput">
+    <mat-form-field style="width: 400px">
+      <input matInput [formControl]="chatMessage" type="text" (keydown.enter)="sendMessage()">
     </mat-form-field>
     <button mat-button [disabled]="!chatMessage.valid" (click)="sendMessage()">
       <span style="display: flex; flex-direction: row; align-items: center;">
@@ -38,5 +38,7 @@
 
 
 <ng-template #no_chatroom_selected>
-  <mat-error>No Chatroom Selected</mat-error>
+  <div class="noChatRooms">
+    <mat-hint>Select chat to start messaging</mat-hint>
+  </div>
 </ng-template>
