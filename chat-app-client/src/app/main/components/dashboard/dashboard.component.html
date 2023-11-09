@@ -6,10 +6,13 @@
           <span class="headerContainer">
             <span style="display: flex; align-items: center; justify-content: space-between;">
               <h2>Obrgram</h2>
-              <span style="display: flex; flex-direction: column; align-items: center">
+              <div style="display: flex">
+              <button mat-button [routerLink]="['../profile']" style="display: flex; flex-direction: column; align-items: center">
                  <i class="material-icons">person</i>
                 <small>{{user.username}} </small>
-              </span>
+              </button>
+               <button mat-button (click)="logout()"><mat-icon>logout</mat-icon></button>
+                </div>
             </span>
              <button mat-button [routerLink]="['../create-room']">Add Chat</button>
           </span>

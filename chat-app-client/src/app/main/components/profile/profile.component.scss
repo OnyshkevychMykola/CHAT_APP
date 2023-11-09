@@ -1,0 +1,16 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  .cardHeader {
+    display: flex;
+    flex-direction: column;
+  }
+  .avatarIcon i {
+    height: 48px;
+    width: 48px;
+  }
+}

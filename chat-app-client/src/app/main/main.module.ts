@@ -19,6 +19,7 @@ import { SelectUsersComponent } from './components/select-users/select-users.com
 import { ChatRoomComponent } from './components/chat-room/chat-room.component';
 import { ChatMessageComponent } from './components/chat-message/chat-message.component';
 import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
     CreateRoomComponent,
     SelectUsersComponent,
     ChatRoomComponent,
-    ChatMessageComponent
+    ChatMessageComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
