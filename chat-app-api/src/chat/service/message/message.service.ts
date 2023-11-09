@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   IPaginationOptions,
@@ -33,5 +33,20 @@ export class MessageService {
       .orderBy('message.created_at', 'DESC');
 
     return paginate(query, options);
+  }
+
+  async update(data: any): Promise<MessageI> {
+    const message = (await this.messageRepository.findOne({
+      where: { id: data.messageId },
+    })) as MessageI;
+    if (!message) {
+      throw new NotFoundException(
+        `Message with id ${data.messageId} not found`,
+      );
+    }
+    message.text = data.text;
+    await this.messageRepository.save(message);
+
+    return message;
   }
 }

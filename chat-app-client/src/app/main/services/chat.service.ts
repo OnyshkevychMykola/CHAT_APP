@@ -20,6 +20,14 @@ export class ChatService {
     this.socket.emit('addMessage', message);
   }
 
+  getUpdateMessage(): Observable<MessageI> {
+    return this.socket.fromEvent<MessageI>('messageUpdated');
+  }
+
+  updateMessage(data: any) {
+    this.socket.emit('updateMessage', data);
+  }
+
   joinRoom(room: RoomI) {
     this.socket.emit('joinRoom', room);
   }

@@ -148,6 +148,20 @@ export class ChatGateway
     }
   }
 
+  @SubscribeMessage('updateMessage')
+  async onUpdateMessage(socket: Socket, data: any) {
+    console.log('2324');
+    const updatedMessage: MessageI = await this.messageService.update(data);
+    console.log(updatedMessage);
+    const room: RoomI = await this.roomService.getRoom(data.roomId);
+    const joinedUsers: JoinedRoomI[] = await this.joinedRoomService.findByRoom(
+      room,
+    );
+    for (const user of joinedUsers) {
+      this.server.to(user.socketId).emit('messageUpdated', updatedMessage);
+    }
+  }
+
   private handleIncomingPageRequest(page: PageI) {
     page.limit = page.limit > 100 ? 100 : page.limit;
     page.page = page.page + 1;

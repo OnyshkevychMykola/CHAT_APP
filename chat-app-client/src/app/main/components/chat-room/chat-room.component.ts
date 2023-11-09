@@ -27,7 +27,8 @@ export class ChatRoomComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   messagesPaginate$: Observable<MessagePaginateI> = combineLatest([
     this.chatService.getMessages(),
-    this.chatService.getAddedMessage().pipe(startWith(null))
+    this.chatService.getAddedMessage().pipe(startWith(null)),
+    this.chatService.getUpdateMessage().pipe(startWith(null)),
   ]).pipe(
     map(([messagePaginate, message]) => {
       if (message && message.room.id === this.chatRoom.id && !messagePaginate.items.some(m => m.id === message.id)) {
