@@ -1,10 +1,15 @@
-<span style="display: flex;" [ngClass]="{ownContainer: message.user.id === user.id}">
-  <button *ngIf="message.user.id === user.id" mat-button (click)="changeEdit()">Edit</button>
-  <p *ngIf="edit === false" [ngClass]="{ownMessage: message.user.id === user.id}">
-    <em>{{message.user.username}}</em> <br /> {{message.text}}
+<span style="display: flex;"  [ngClass]="{ownContainer: message.user.id === user.id}">
+  <p *ngIf="edit === false" [ngClass]="{ownMessage: message.user.id === user.id}" class="messageText">
+      <em>{{message.text}}</em>
+        <mat-icon class="editIcon" *ngIf="message.user.id === user.id" (click)="changeEdit()">
+        edit
+        </mat-icon>
+      <em *ngIf="message.user.id !== user.id; else null">
+        {{ message.user.username }}
+      </em>
   </p>
 <p *ngIf="edit">
-   <input matInput value="{{message.text}}" type="text" (keydown.enter)="updateMessage()">
+   <input matInput value="{{message.text}}" [formControl]="messageText" type="text" (keydown.enter)="updateMessage()">
   </p>
 </span>
 
